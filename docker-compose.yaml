@@ -1,22 +1,22 @@
 version: '3.8'
-
 services:
-
   db:
-    container_name: mysql_container
-    image: mysql
-    command: --default-authentication-plugin=mysql_native_password
+    container_name: mariadb-database
+    image: mariadb:10.8
     restart: always
+    volumes:
+      - ./database/mysql:/var/lib/mysql
     environment:
-      MYSQL_ROOT_PASSWORD: P@ssw0rd@admin
+      - MARIADB_ROOT_PASSWORD=P@ssw0rd@admin
     ports:
-      - "3306:3306"
+      - 3306:3306
 
-  phpmyadmin:
-    container_name: phpmyadmin-container
+  web-client:
+    container_name: mariadb-web-clinet
     image: phpmyadmin
     restart: always
     ports:
       - 8080:80
     environment:
       - PMA_ARBITRARY=1
+      - PMA_PORT=3306
